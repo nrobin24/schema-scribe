@@ -1,9 +1,15 @@
 import * as fs from "fs";
 import * as path from "path";
 
-// Define any necessary interfaces or types
-interface SchemaDefinition {
-  // ... your schema definition properties here
+interface SchemaField {
+  name: string;
+  type: string;
+}
+
+export interface SchemaDefinition {
+  name: string;
+  type: string;
+  fields: SchemaField[];
 }
 
 class SchemaParser {
@@ -15,18 +21,14 @@ class SchemaParser {
   }
 
   // Method to read and parse all schema files in the specified directory
-  parseSchemas(): SchemaDefinition[] {
+  async parseSchemas(): Promise<SchemaDefinition[]> {
     const schemaFiles = this.getSchemaFiles();
     const schemas: SchemaDefinition[] = [];
 
     for (const file of schemaFiles) {
-      const schemaContent = fs.readFileSync(
-        path.join(this.schemaDirectory, file),
-        "utf-8"
-      );
-      // Assume each file exports a schema definition as default
-      const schemaDefinition: SchemaDefinition =
-        this.parseSchemaFile(schemaContent);
+      const filePath = path.join(this.schemaDirectory, file);
+      const schemaModule = await import(filePath);
+      const schemaDefinition: SchemaDefinition = schemaModule.default;
       schemas.push(schemaDefinition);
     }
 
@@ -37,13 +39,6 @@ class SchemaParser {
   private getSchemaFiles(): string[] {
     const files = fs.readdirSync(this.schemaDirectory);
     return files.filter((file) => file.endsWith(".js") || file.endsWith(".ts"));
-  }
-
-  // Method to parse an individual schema file
-  private parseSchemaFile(schemaContent: string): SchemaDefinition {
-    // Your logic for parsing a schema file content
-    // This may require evaluating the JavaScript code, which might be done using a library or VM
-    // Note: evaluating code can be risky, ensure you have safety checks in place
   }
 }
 

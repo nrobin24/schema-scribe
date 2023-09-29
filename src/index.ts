@@ -12,7 +12,7 @@ async function generateDocumentation(
 ): Promise<void> {
   try {
     const parser = new SchemaParser(schemaDirectory);
-    const schemas = parser.parseSchemas();
+    const schemas = await parser.parseSchemas();
 
     const docGenerator = new DocumentationGenerator(openAIKey);
     await docGenerator.generate(schemas);

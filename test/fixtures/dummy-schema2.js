@@ -1,5 +1,4 @@
-// dummy-schema1.js
-export default {
+module.exports = {
   name: "author",
   type: "document",
   fields: [

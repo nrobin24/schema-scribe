@@ -7,12 +7,23 @@
     "test": "test"
   },
   "scripts": {
-    "test": "test"
+    "test": "mocha -r ts-node/register test/**/*.test.ts"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/nrobin24/"
   },
   "author": "Nick Robin",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.3.6",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^20.6.5",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "chai": "^4.3.8",
+    "vm2": "^3.9.19"
+  }
 }
